@@ -1,0 +1,58 @@
+// using System;
+
+// enum OrderStatus
+// {
+//     Pending,
+//     Processing,
+//     Shipped,
+//     Delivered,
+//     Cancelled
+// }
+
+
+// class Order
+// {
+//     int id;
+//     string customerName;
+//     OrderStatus orderStatus;
+
+//     public Order(int id,string customerName,OrderStatus orderStatus){
+//         this.id=id;
+//         this.customerName=customerName;
+//         this.orderStatus=orderStatus;
+//     }
+
+//     public void DisplayStatusMessage(){
+
+//         switch ((int)orderStatus)
+//         {
+//             case 0:
+//                 Console.WriteLine($"ID:{id}, Sifarisci:{customerName}, Sifariş qəbul olundu, emal gözləyir.");
+//                 break;
+//             case 1:
+//                 Console.WriteLine($"ID:{id}, Sifarisci:{customerName}, Sifariş hazırda emal olunur.");
+//                 break;
+//             case 2:
+//                 Console.WriteLine($"ID:{id}, Sifarisci:{customerName}, Sifariş göndərildi, yoldadır.");
+//                 break;
+//             case 3:
+//                 Console.WriteLine($"ID:{id}, Sifarisci:{customerName}, Sifariş müştəriyə çatdı.");
+//                 break;
+//             case 4:
+//                 Console.WriteLine($"ID:{id}, Sifarisci:{customerName}, Sifariş ləğv edildi.");
+//                 break;
+
+                
+//         }
+
+//     }
+// }
+
+// class Program
+// {
+//     static void Main()
+//     {
+//         Order order1 = new Order(101, "Kamal", OrderStatus.Processing);
+//         order1.DisplayStatusMessage();
+//     }
+// }
