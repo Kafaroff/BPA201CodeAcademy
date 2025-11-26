@@ -1,0 +1,560 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
+
+namespace EmployeeManagement
+{
+    public enum Position
+    {
+        Junior = 1,
+        Middle,
+        Senior,
+        Manager
+    }
+
+    public enum SortOption
+    {
+        Id = 1,
+        Name,
+        HireDate,
+        Salary
+    }
+
+    public interface IPrintable
+    {
+        void PrintInfo();
+    }
+
+    public class DuplicateEmployeeException : Exception
+    {
+        public DuplicateEmployeeException(string message) : base(message) { }
+    }
+
+    public class EmployeeNotFoundException : Exception
+    {
+        public EmployeeNotFoundException(string message) : base(message) { }
+    }
+
+    public class NameEmptyException : Exception
+    {
+        public NameEmptyException(string message) : base(message) { }
+    }
+
+    public class NameLengthException : Exception
+    {
+        public NameLengthException(string message) : base(message) { }
+    }
+
+    public class InvalidSalaryException : Exception
+    {
+        public InvalidSalaryException(string message) : base(message) { }
+    }
+
+    public class InvalidWorkInfoException : Exception
+    {
+        public InvalidWorkInfoException(string message) : base(message) { }
+    }
+
+    public class FileLoadException : Exception
+    {
+        public FileLoadException(string message, Exception inner = null)
+            : base(message, inner) { }
+    }
+
+    public struct Contact
+    {
+        public string OfficeNumber { get; }
+        public int Floor { get; }
+
+        public Contact(string officeNumber, int floor)
+        {
+            if (string.IsNullOrWhiteSpace(officeNumber))
+                throw new InvalidWorkInfoException("Office number bos ola bilmez.");
+            if (floor <= 0)
+                throw new InvalidWorkInfoException("Floor 0-dan boyuk olmalidir.");
+
+            OfficeNumber = officeNumber;
+            Floor = floor;
+        }
+
+        public override string ToString()
+        {
+            return $"Office: {OfficeNumber}, Floor: {Floor}";
+        }
+    }
+
+    public abstract class Person
+    {
+        private string _name;
+
+        public int Id { get; set; }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new NameEmptyException("Name bos ola bilmez.");
+                if (value.Length < 3 || value.Length > 25)
+                    throw new NameLengthException("Name 3-25 simvol arasi olmalidir.");
+                _name = value;
+            }
+        }
+
+        protected Person(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public abstract void PrintInfo();
+    }
+
+    public class Employee : Person, IPrintable
+    {
+        private decimal? _salary;
+        private string _department;
+
+        public Position? Position { get; set; }
+
+        public decimal? Salary
+        {
+            get => _salary;
+            set
+            {
+                if (value != null && value <= 0)
+                    throw new InvalidSalaryException("Salary 0-dan boyuk olmalidir.");
+                _salary = value;
+            }
+        }
+
+        public string Department
+        {
+            get => _department;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new NameEmptyException("Department bos ola bilmez.");
+                if (value.Length < 5 || value.Length > 6)
+                    throw new NameLengthException("Department 5-6 simvol olmalidir.");
+                _department = value;
+            }
+        }
+
+        public DateTime HireDate { get; }
+
+        public Contact? WorkInfo { get; set; }
+
+        public Employee(
+            int id,
+            string name,
+            Position? position,
+            decimal? salary,
+            string department,
+            DateTime hireDate,
+            Contact? workInfo = null
+        ) : base(id, name)
+        {
+            Position = position;
+            Salary = salary;
+            Department = department;
+            HireDate = hireDate;
+            WorkInfo = workInfo;
+        }
+
+        public override void PrintInfo()
+        {
+            string positionStr = Position?.ToString() ?? "N/A";
+            string salaryStr = Salary.HasValue ? Salary.Value.ToString("F2") : "N/A";
+            string deptStr = string.IsNullOrWhiteSpace(Department) ? "N/A" : Department;
+            string hireDateStr = HireDate.ToString("dd.MM.yyyy");
+            string workInfoStr = WorkInfo.HasValue ? WorkInfo.Value.ToString() : "N/A";
+
+            Console.WriteLine("-------------------------------------------------");
+            Console.WriteLine($"ID          : {Id}");
+            Console.WriteLine($"Name        : {Name}");
+            Console.WriteLine($"Position    : {positionStr}");
+            Console.WriteLine($"Salary      : {salaryStr}");
+            Console.WriteLine($"Department  : {deptStr}");
+            Console.WriteLine($"Hire Date   : {hireDateStr}");
+            Console.WriteLine($"Work Info   : {workInfoStr}");
+            Console.WriteLine("-------------------------------------------------");
+        }
+    }
+
+    public class EmployeeService
+    {
+        private readonly List<Employee> _employees;
+        private readonly string _filePath;
+
+        public EmployeeService(string filePath)
+        {
+            _filePath = filePath;
+            _employees = LoadFromFile();
+        }
+
+        public void AddEmployee(Employee employee)
+        {
+            if (_employees.Any(e => e.Id == employee.Id))
+                throw new DuplicateEmployeeException("Bu ID ile isczi artiq movcuddur.");
+            _employees.Add(employee);
+            SaveToFile();
+        }
+
+        public void RemoveEmployee(int id)
+        {
+            var emp = _employees.FirstOrDefault(e => e.Id == id);
+            if (emp == null)
+                throw new EmployeeNotFoundException("Bu ID ile isczi tapilmadi.");
+            _employees.Remove(emp);
+            SaveToFile();
+        }
+
+        public Employee SearchEmployee(int id)
+        {
+            var emp = _employees.FirstOrDefault(e => e.Id == id);
+            if (emp == null)
+                throw new EmployeeNotFoundException("Isczi tapilmadi.");
+            return emp;
+        }
+
+        public List<Employee> SearchEmployee(string namePart)
+        {
+            namePart = namePart?.Trim() ?? "";
+            return _employees
+                .Where(e => e.Name.Contains(namePart, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        public void UpdateEmployee(Employee updatedEmployee)
+        {
+            var existing = _employees.FirstOrDefault(e => e.Id == updatedEmployee.Id);
+            if (existing == null)
+                throw new EmployeeNotFoundException("Isczi tapilmadi.");
+            _employees.Remove(existing);
+            _employees.Add(updatedEmployee);
+            SaveToFile();
+        }
+
+        public List<Employee> ListEmployees()
+        {
+            return _employees.OrderBy(e => e.Id).ToList();
+        }
+
+        public List<Employee> SortEmployees(SortOption option, bool ascending = true)
+        {
+            IEnumerable<Employee> query = _employees;
+
+            switch (option)
+            {
+                case SortOption.Id:
+                    query = ascending ? query.OrderBy(e => e.Id) : query.OrderByDescending(e => e.Id);
+                    break;
+                case SortOption.Name:
+                    query = ascending ? query.OrderBy(e => e.Name) : query.OrderByDescending(e => e.Name);
+                    break;
+                case SortOption.HireDate:
+                    query = ascending ? query.OrderBy(e => e.HireDate) : query.OrderByDescending(e => e.HireDate);
+                    break;
+                case SortOption.Salary:
+                    query = ascending
+                        ? query.OrderBy(e => e.Salary ?? decimal.MaxValue)
+                        : query.OrderByDescending(e => e.Salary ?? decimal.MinValue);
+                    break;
+            }
+
+            return query.ToList();
+        }
+
+        public List<Employee> FilterEmployees(string namePart = null, decimal? minSalary = null, decimal? maxSalary = null)
+        {
+            IEnumerable<Employee> query = _employees;
+
+            if (!string.IsNullOrWhiteSpace(namePart))
+            {
+                query = query.Where(e =>
+                    e.Name.Contains(namePart, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (minSalary.HasValue)
+            {
+                query = query.Where(e => e.Salary.HasValue && e.Salary.Value >= minSalary.Value);
+            }
+
+            if (maxSalary.HasValue)
+            {
+                query = query.Where(e => e.Salary.HasValue && e.Salary.Value <= maxSalary.Value);
+            }
+
+            return query.ToList();
+        }
+
+        public void SaveToFile()
+        {
+            var dir = Path.GetDirectoryName(_filePath);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            var json = JsonConvert.SerializeObject(_employees, Formatting.Indented);
+            File.WriteAllText(_filePath, json);
+        }
+
+        private List<Employee> LoadFromFile()
+        {
+            try
+            {
+                if (!File.Exists(_filePath))
+                    return new List<Employee>();
+                var json = File.ReadAllText(_filePath);
+                var list = JsonConvert.DeserializeObject<List<Employee>>(json);
+                return list ?? new List<Employee>();
+            }
+            catch (Exception ex)
+            {
+                throw new FileLoadException("employees.json fayli oxunarken xeta bas verdi.", ex);
+            }
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string filePath = "Data/employees.json";
+            EmployeeService service;
+
+            try
+            {
+                service = new EmployeeService(filePath);
+            }
+            catch (FileLoadException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
+
+            while (true)
+            {
+                Console.WriteLine("==== Employee Management System ====");
+                Console.WriteLine("1. Add Employee");
+                Console.WriteLine("2. Remove Employee");
+                Console.WriteLine("3. Search Employee");
+                Console.WriteLine("4. Update Employee");
+                Console.WriteLine("5. List Employees");
+                Console.WriteLine("6. Sort Employees");
+                Console.WriteLine("7. Filter Employees");
+                Console.WriteLine("0. Exit");
+                Console.Write("Secim: ");
+
+                string choice = Console.ReadLine();
+                Console.WriteLine();
+
+                try
+                {
+                    switch (choice)
+                    {
+                        case "1":
+                            AddEmployeeMenu(service);
+                            break;
+                        case "2":
+                            RemoveEmployeeMenu(service);
+                            break;
+                        case "3":
+                            SearchEmployeeMenu(service);
+                            break;
+                        case "4":
+                            UpdateEmployeeMenu(service);
+                            break;
+                        case "5":
+                            ListEmployeesMenu(service);
+                            break;
+                        case "6":
+                            SortEmployeesMenu(service);
+                            break;
+                        case "7":
+                            FilterEmployeesMenu(service);
+                            break;
+                        case "0":
+                            return;
+                        default:
+                            Console.WriteLine("Yanlish secim.");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Xeta: " + ex.Message);
+                }
+
+                Console.WriteLine();
+            }
+        }
+
+        static Employee ReadEmployeeFromInput(int? fixedId = null)
+        {
+            Console.WriteLine("Employee melumatlarini daxil et:");
+
+            int id;
+            if (fixedId.HasValue)
+            {
+                id = fixedId.Value;
+                Console.WriteLine("ID: " + id);
+            }
+            else
+            {
+                Console.Write("ID: ");
+                int.TryParse(Console.ReadLine(), out id);
+            }
+
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Position (1-Junior, 2-Middle, 3-Senior, 4-Manager, bos→null): ");
+            string posStr = Console.ReadLine();
+            Position? pos = null;
+            if (int.TryParse(posStr, out int posVal) && posVal >= 1 && posVal <= 4)
+                pos = (Position)posVal;
+
+            Console.Write("Salary: ");
+            string salStr = Console.ReadLine();
+            decimal? salary = null;
+            if (decimal.TryParse(salStr, out decimal salVal))
+                salary = salVal;
+
+            Console.Write("Department: ");
+            string department = Console.ReadLine();
+
+            Console.Write("Hire date (dd.MM.yyyy): ");
+            string dateStr = Console.ReadLine();
+            if (!DateTime.TryParse(dateStr, out DateTime hire))
+                hire = DateTime.Now;
+
+            Console.Write("Office number (bos→null): ");
+            string office = Console.ReadLine();
+            Contact? work = null;
+
+            if (!string.IsNullOrWhiteSpace(office))
+            {
+                Console.Write("Floor: ");
+                int.TryParse(Console.ReadLine(), out int floor);
+                work = new Contact(office, floor);
+            }
+
+            return new Employee(id, name, pos, salary, department, hire, work);
+        }
+
+        static void AddEmployeeMenu(EmployeeService service)
+        {
+            try
+            {
+                var emp = ReadEmployeeFromInput();
+                service.AddEmployee(emp);
+                Console.WriteLine("Isci elave olundu.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Xeta: " + ex.Message);
+            }
+        }
+
+        static void RemoveEmployeeMenu(EmployeeService service)
+        {
+            Console.Write("Silinecek iscinin ID-si: ");
+            int.TryParse(Console.ReadLine(), out int id);
+            service.RemoveEmployee(id);
+            Console.WriteLine("Isci silindi.");
+        }
+
+        static void SearchEmployeeMenu(EmployeeService service)
+        {
+            Console.WriteLine("1. ID ile axtar");
+            Console.WriteLine("2. Ada gore axtar");
+            Console.Write("Secim: ");
+            string ch = Console.ReadLine();
+
+            if (ch == "1")
+            {
+                Console.Write("ID: ");
+                int.TryParse(Console.ReadLine(), out int id);
+                var emp = service.SearchEmployee(id);
+                emp.PrintInfo();
+            }
+            else
+            {
+                Console.Write("Ad parcası: ");
+                string namePart = Console.ReadLine();
+                var list = service.SearchEmployee(namePart);
+                foreach (var e in list) e.PrintInfo();
+            }
+        }
+
+        static void UpdateEmployeeMenu(EmployeeService service)
+        {
+            Console.Write("Yenilenecek iscinin ID-si: ");
+            int.TryParse(Console.ReadLine(), out int id);
+
+            var old = service.SearchEmployee(id);
+            Console.WriteLine("Hazirki melumat:");
+            old.PrintInfo();
+
+            Console.WriteLine("Yeni melumatlari daxil et:");
+            var updated = ReadEmployeeFromInput(id);
+            service.UpdateEmployee(updated);
+            Console.WriteLine("Isci yenilendi.");
+        }
+
+        static void ListEmployeesMenu(EmployeeService service)
+        {
+            var list = service.ListEmployees();
+            if (list.Count == 0)
+            {
+                Console.WriteLine("Sistemde isci yoxdur.");
+                return;
+            }
+            foreach (var e in list) e.PrintInfo();
+        }
+
+        static void SortEmployeesMenu(EmployeeService service)
+        {
+            Console.WriteLine("Sort novu:");
+            Console.WriteLine("1. ID");
+            Console.WriteLine("2. Name");
+            Console.WriteLine("3. HireDate");
+            Console.WriteLine("4. Salary");
+            Console.Write("Secim: ");
+            int.TryParse(Console.ReadLine(), out int opt);
+
+            Console.Write("Artan(1) / Azalan(0): ");
+            bool asc = Console.ReadLine() == "1";
+
+            var list = service.SortEmployees((SortOption)opt, asc);
+            foreach (var e in list) e.PrintInfo();
+        }
+
+        static void FilterEmployeesMenu(EmployeeService service)
+        {
+            Console.Write("Ad parcası: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Min salary: ");
+            string minStr = Console.ReadLine();
+            decimal? min = null;
+            if (decimal.TryParse(minStr, out decimal minV))
+                min = minV;
+
+            Console.Write("Max salary: ");
+            string maxStr = Console.ReadLine();
+            decimal? max = null;
+            if (decimal.TryParse(maxStr, out decimal maxV))
+                max = maxV;
+
+            var list = service.FilterEmployees(name, min, max);
+            foreach (var e in list) e.PrintInfo();
+        }
+    }
+}
