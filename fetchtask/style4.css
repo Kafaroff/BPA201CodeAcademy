@@ -1,0 +1,9 @@
+body {
+    background-image: url("https://media.cnn.com/api/v1/images/stellar/prod/230816151359-lionel-messi-inter-miami.jpg?c=16x9&q=h_833,w_1480,c_fill");
+    background-size: cover;
+    background-position: center;
+}
+
+h2, h3, p {
+    color: white;
+}
