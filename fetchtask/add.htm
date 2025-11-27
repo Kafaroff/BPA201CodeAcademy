@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+    <form id="add-form">
+        <h3>Company Info</h3>
+        <label>
+          Company Name:
+          <input type="text" id="companyName" required />
+        </label>
+        <br />
+        <label>
+          Contact Name:
+          <input type="text" id="contactName" required />
+        </label>
+        <br />
+        <label>
+          Contact Title:
+          <input type="text" id="contactTitle" />
+        </label>
+      
+        <h3>Address</h3>
+        <label>
+          Street:
+          <input type="text" id="street" />
+        </label>
+        <br />
+        <label>
+          City:
+          <input type="text" id="city" />
+        </label>
+        <br />
+        <label>
+          Region:
+          <input type="text" id="region" />
+        </label>
+        <br />
+        <label>
+          Postal Code:
+          <input type="number" id="postalCode" />
+        </label>
+        <br />
+        <label>
+          Country:
+          <input type="text" id="country" />
+        </label>
+        <br />
+        <label>
+          Phone:
+          <input type="text" id="phone" />
+        </label>
+        <br /><br />
+        <button type="submit">Add Supplier</button>
+      </form>
+      
+      <script>
+        const API_URL = "https://northwind.vercel.app/api/suppliers";
+      
+        document.getElementById("add-form").addEventListener("submit", function (e) {
+          e.preventDefault();
+      
+          const companyName = document.getElementById("companyName").value;
+          const contactName = document.getElementById("contactName").value;
+          const contactTitle = document.getElementById("contactTitle").value;
+      
+          const street = document.getElementById("street").value;
+          const city = document.getElementById("city").value;
+          const region = document.getElementById("region").value;
+          const postalCode = document.getElementById("postalCode").value;
+          const country = document.getElementById("country").value;
+          const phone = document.getElementById("phone").value;
+      
+          const newSupplier = {
+            companyName,
+            contactName,
+            contactTitle,
+            address: {
+              street,
+              city,
+              region,
+              postalCode: postalCode ? Number(postalCode) : null,
+              country,
+              phone
+            }
+          };
+      
+          fetch(API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newSupplier)
+          })
+            .then(res => {
+              if (!res.ok) throw new Error("Post error");
+              return res.json();
+            })
+            .then(data => {
+              alert("Supplier əlavə olundu!");
+              window.location.href = "suppliers.htm";
+            })
+            .catch(err => console.error(err));
+        });
+      </script>
+      
+</body>
+</html>
+
