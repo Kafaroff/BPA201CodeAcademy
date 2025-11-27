@@ -1,0 +1,9 @@
+body {
+    background-image: url("https://media.cnn.com/api/v1/images/stellar/prod/221218184732-messi-wc-trophy.jpg?c=original");
+    background-size: cover;
+    background-position: center;
+}
+
+h3, label{
+    color: white;
+}
