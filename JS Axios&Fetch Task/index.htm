@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <h3>Name:</h3>
+    <input type="text" name="name" id="name" class="form-control w-25 mb-3">
+    <h3>Description:</h3>
+    <input type="text" name="description" id="description" class="form-control w-25 mb-3">
+    <button class="btn btn-primary mb-3" onclick="addSupplier()">Add</button>
+
+
+
+    <div class="container mt-3">
+        <div id="suppliers-body"></div>
+    </div>
+
+<script>
+var API_URL = "https://northwind.vercel.app/api/categories";
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadSuppliers();
+});
+
+function loadSuppliers() {
+    fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+            var tbody = document.getElementById("suppliers-body");
+            tbody.innerHTML = "";
+
+            data.forEach(s => {
+                var div = document.createElement("div");
+                div.innerHTML = `
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title">${s.name}</h5>
+                                    <p class="card-text">${s.description || ""}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-danger btn-sm" onclick="deleteSupplier(${s.id})">DELETE</a>
+                    </div>
+                `;
+                tbody.appendChild(div);
+            });
+        })
+}
+
+      function deleteSupplier(id) {
+        if (!confirm("Silmək istədiyinə əminsən?")) return;
+
+        fetch(API_URL + "/" + id, {
+          method: "DELETE"
+        })
+        .then(() => {
+        location.reload(); 
+    });
+
+
+      }
+
+
+
+
+
+
+    function addSupplier() {
+        var name = document.getElementById("name").value;
+        var description = document.getElementById("description").value;
+
+        var newSupplier = {
+            name: name,
+            description: description
+        };
+
+        fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newSupplier)
+        })
+        .then(res => res.json())
+        .then(() => {
+            loadSuppliers();
+            document.getElementById("name").value = "";
+            document.getElementById("description").value = "";
+        }); }
+</script>
+
+</body>
+</html>
