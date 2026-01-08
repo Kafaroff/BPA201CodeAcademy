@@ -1,0 +1,76 @@
+// using System;
+
+
+// abstract class Vehicle
+// {
+//     public string Color { get; set; }
+//     public int Year { get; set; }
+
+//     public Vehicle(int year, string color)
+//     {
+//         Year = year;
+//         Color = color;
+//     }
+
+//     public abstract void ShowInfo();
+// }
+
+// class Car : Vehicle
+// {
+//     public string Brand { get; set; }
+//     public string Model { get; set; }
+//     public int MaxSpeed { get; set; }
+
+//     public Car(int year, string color, string brand, string model, int maxSpeed) 
+//         : base(year, color)
+//     {
+//         Brand = brand;
+//         Model = model;
+//         MaxSpeed = maxSpeed;
+//     }
+
+//     public override void ShowInfo()
+//     {
+//         Console.WriteLine($"Car: {Brand} {Model}, Color: {Color}, Year: {Year}, MaxSpeed: {MaxSpeed} km/h");
+//     }
+// }
+
+
+// class Bus : Vehicle
+// {
+//     public int PassengerCount { get; set; }
+
+//     public Bus(int year, string color, int passengerCount) 
+//         : base(year, color)
+//     {
+//         PassengerCount = passengerCount;
+//     }
+
+//     public override void ShowInfo()
+//     {
+//         Console.WriteLine($"Bus: Color: {Color}, Year: {Year}, PassengerCount: {PassengerCount}");
+//     }
+// }
+
+// class Program
+// {
+//     static void Main()
+//     {
+//         Vehicle[] vehicles = new Vehicle[]
+//         {
+//             new Car(2020, "Red", "Toyota", "CODECorolla", 180),
+//             new Car(2019, "Blue", "Honda", "CODECivic", 200),
+//             new Bus(2015, "Yellow", 50),
+//             new Bus(2018, "White", 40)
+//         };
+
+//         foreach (var vehicle in vehicles)
+//         {
+//             vehicle.ShowInfo();
+//         }
+
+//         Console.ReadLine(); 
+//     }
+// }
+
+// // 100 bal verseniz sevineremm

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Bio</title>
+</head>
+<body>
+
+    <h1>Student Bio</h1>
+    <h2>Your Name</h2>
+
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/250px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="profile image" width="200">
+
+
+    <p>
+        Write a short paragraph or two about yourself, or use placeholder text.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Provident consectetur iste illo iure quod. Placeat architecto,
+        sequi fugiat officiis odio nam inventore laboriosam fuga.
+    </p>
+
+    
+    <h2>Contact Info</h2>
+
+    <ul>
+        <li><strong>Email:</strong> <a href="mailto:someplace@gmail.com">someplace@gmail.com</a></li>
+        <li><strong>Github:</strong> <a href="https://github.com/sampleName" target="_blank">sampleName</a></li>
+        <li><strong>Portfolio:</strong> <a href="#" target="_blank">coming soon</a></li>
+    </ul>
+
+    <hr>
+
+    <h1>Name Surname</h1>
+
+  
+    <p>
+        <strong>About:</strong>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident consectetur iste illo iure quod. 
+        Placeat architecto, sequi fugiat officiis odio nam inventore laboriosam fuga.
+        Eos minus repudiandae. Deleniti aut nisi maxime numquam modi cumque!
+    </p>
+
+   
+    <h2>Hobbies</h2>
+    <ul>
+        <li>Football</li>
+        <li>Programming</li>
+        <li>Swimming</li>
+        <li>Reading books</li>
+    </ul>
+
+    <hr>
+
+   
+    <img src="https://sc0.blr1.cdn.digitaloceanspaces.com/article/132085-oqnsnpblev-1575345193.jpg" 
+         width="350" alt="profile photo">
+
+    
+    <ol type="a">
+        <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+        <li><a href="https://linkedin.com" target="_blank">LinkedIN</a></li>
+        <li><a href="https://github.com" target="_blank">GitHub</a></li>
+    </ol>
+
+</body>
+</html>

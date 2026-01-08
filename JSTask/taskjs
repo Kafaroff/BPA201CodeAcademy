@@ -1,0 +1,431 @@
+let students = [
+{
+id: 1,
+name: "Nurane",
+surname: "Ismayilzade",
+age: 21,
+hobbies: ["music", "walking", "watchingfilm"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "cavid" },
+{ id: 4, name: "alisa" },
+],
+loginDetail: { username: "nurana21", password: "nunu123" },
+gender: "girl",
+boyfriendGirlfriend: false,
+fail: false,
+avgPoint: 88,
+salaryAZN: 144,
+},
+{
+id: 2,
+name: "Gizilgul",
+surname: "Allahverdiyeva",
+age: 20,
+hobbies: ["book", "writing code"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "babaxan" },
+{ id: 4, name: "gulshen" },
+],
+loginDetail: { username: "allahverdieva1", password: "salam123" },
+gender: "girl",
+boyfriendGirlfriend: true,
+fail: false,
+avgPoint: 70,
+salaryAZN: 100,
+},
+{
+id: 3,
+name: "Xanim",
+surname: "Nuriyeva",
+age: 21,
+hobbies: ["book", "music"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "hikmet" },
+{ id: 4, name: "gulsen" },
+],
+loginDetail: { username: "xanim123", password: "salamBaku" },
+gender: "girl",
+boyfriendGirlfriend: false,
+fail: false,
+avgPoint: 80,
+salaryAZN: 145,
+},
+{
+id: 4,
+name: "Minaya",
+surname: "Binnetova",
+age: 21,
+hobbies: ["book", "gaming", "movie", "music"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "anar" },
+],
+loginDetail: { username: "binnetova", password: "hello123" },
+gender: "girl",
+boyfriendGirlfriend: false,
+fail: false,
+avgPoint: 90,
+salaryAZN: 142,
+},
+{
+id: 5,
+name: "Sabina",
+surname: "Hatamli",
+age: 21,
+hobbies: ["shopping", "listen to music"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "Mirvari" },
+],
+loginDetail: { username: "sebine123", password: "salam123" },
+gender: "girl",
+boyfriendGirlfriend: true,
+fail: false,
+avgPoint: 81,
+salaryAZN: 146,
+},
+{
+id: 6,
+name: "Leman",
+surname: "Shamilova",
+age: 20,
+hobbies: [
+"watching movies",
+"reading books",
+"painting",
+" walking",
+" listen to music",
+],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+],
+loginDetail: { username: "lemanshamilova", password: "salamBaku" },
+gender: "girl",
+boyfriendGirlfriend: false,
+fail: false,
+avgPoint: 85.8,
+salaryAZN: 145,
+},
+{
+id: 7,
+name: "Narmin",
+surname: "Musayeva",
+age: 21,
+hobbies: ["book", "gaming", "painting", "walking"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "fidan" },
+{ id: 4, name: "Irada" },
+],
+loginDetail: {
+username: "narmin0",
+password: "narmin01",
+},
+gender: "girl",
+boyfriendGirlfriend: false,
+fail: false,
+avgPoint: 80,
+salaryAZN: 196,
+},
+{
+id: 8,
+name: "Fatima",
+surname: "Akhundzada",
+age: 20,
+hobbies: ["drawing", "sleeping"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "Valida" },
+],
+loginDetail: { username: "aynur123", password: "salamBaku" },
+gender: "girl",
+boyfriendGirlfriend: true,
+fail: false,
+avgPoint: 76,
+salaryAZN: 100,
+},
+{
+id: 9,
+name: "Elmir",
+surname: "Huseynov",
+age: 21,
+hobbies: ["book", "ice skating", "Tennis", "Karting"],
+student: true,
+teacher: [
+{ id: 1, name: "Gurban" },
+{ id: 2, name: "Hajar" },
+{ id: 3, name: "Morad" },
+{ id: 4, name: "Fikrat" },
+],
+loginDetail: { username: "huseynovelmirr", password: "maxverstappen" },
+gender: "man",
+boyfriendGirlfriend: false,
+fail: true,
+avgPoint: 76,
+salaryAZN: 120,
+},
+{
+id: 10,
+name: "Fidan",
+surname: "Rehimli",
+age: 21,
+hobbies: ["book", "gaming"],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "Turan" },
+],
+loginDetail: { username: "fidan123", password: "fidanrahimli" },
+gender: "girl",
+boyfriendGirlfriend: true,
+fail: true,
+avgPoint: 75,
+salaryAZN: 98,
+},
+{
+id: 11,
+name: "Aynur",
+surname: "Aynurova",
+age: 20,
+hobbies: ["book", "gaming"],
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+],
+loginDetail: { username: "aynur123", password: "salamBaku" },
+gender: "girl",
+boyfriendGirlfriend: true,
+fail: true,
+avgPoint: 81,
+salaryAZN: 120,
+},
+{
+id: 12,
+name: "Elman",
+surname: "Muradov",
+age: 20,
+hobbies: [
+"book",
+"gaming",
+"sking",
+"wrestling",
+"swiming",
+"arguing about philosophy",
+"solving sudoku",
+"hiking",
+"walking",
+],
+student: true,
+teacher: [
+{ id: 1, name: "gurban" },
+{ id: 2, name: "hajar" },
+{ id: 3, name: "jale" },
+{ id: 4, name: "akhmed" },
+],
+loginDetail: { username: "elman17", password: "elman12345" },
+gender: "girl",
+boyfriendGirlfriend: false,
+fail: true,
+avgPoint: 76,
+salaryAZN: 100,
+},
+];
+
+
+
+console.log("1) Butun telebeler:");
+console.log(students);
+
+console.log("2) Telebelerin adlari:");
+students.forEach(s => console.log(s.name));
+
+console.log("3) Ad ve soyadlar:");
+students.forEach(s =>
+  console.log(`ad: ${s.name}, soyad: ${s.surname}`)
+);
+
+console.log("4) Kesri olanlar:");
+students
+  .filter(s => s.fail)
+  .forEach(s => console.log(`${s.name} ${s.surname}`));
+
+console.log("5) En cox hobisi olan telebe:");
+const mostHobbyStudent = students.reduce((max, s) => {
+  const curr = s.hobbies?.length || 0;
+  const mx = max.hobbies?.length || 0;
+  return curr > mx ? s : max;
+}, students[0]);
+console.log(mostHobbyStudent.name, mostHobbyStudent.hobbies);
+
+console.log("6) Ortalamasi en yuksek telebe:");
+const bestAvgStudent = students.reduce((max, s) =>
+  s.avgPoint > max.avgPoint ? s : max
+, students[0]);
+console.log(bestAvgStudent.name, bestAvgStudent.surname, bestAvgStudent.avgPoint);
+
+console.log("7) Parolu en uzun olan telebe:");
+const longestPassStudent = students.reduce((max, s) =>
+  s.loginDetail.password.length > max.loginDetail.password.length ? s : max
+, students[0]);
+console.log(longestPassStudent.name, longestPassStudent.loginDetail.username);
+
+console.log("8) Boyfriend/Girlfriend olan telebeler:");
+students
+  .filter(s => s.boyfriendGirlfriend)
+  .forEach(s =>
+    console.log(`ad: ${s.name}, username: ${s.loginDetail.username}`)
+  );
+
+console.log("9) Yasi 20 olan telebeler ve muellimleri:");
+students
+  .filter(s => s.age === 20)
+  .forEach(s => {
+    const t = (s.teacher || []).map(t => t.name).join(", ");
+    console.log(`ad: ${s.name} -> muellimler: ${t}`);
+  });
+
+console.log("10) Teqaud dollar ile:");
+const aznToUsd = 1.7;
+students.forEach(s => {
+  const usd = (s.salaryAZN / aznToUsd).toFixed(2);
+  console.log(`${s.name}: ${s.salaryAZN} AZN ≈ ${usd} USD`);
+});
+
+console.log("11) Muellim adlarinin ilk herfi boyuk:");
+students.forEach(s => {
+  s.teacher = (s.teacher || []).map(t => ({
+    ...t,
+    name: t.name.charAt(0).toUpperCase() + t.name.slice(1)
+  }));
+});
+console.log(students.map(s => s.teacher));
+
+console.log("12) Sifresinde reqem olmayan telebeler:");
+students
+  .filter(s => !/\d/.test(s.loginDetail.password))
+  .forEach(s => console.log(s.name, s.loginDetail.password));
+
+console.log("13) Qizlarda id=3 olan muellim adlari:");
+const teacherId3Names = students
+  .filter(s => s.gender === "girl")
+  .flatMap(s => (s.teacher || []).filter(t => t.id === 3))
+  .map(t => t.name);
+console.log([...new Set(teacherId3Names)]);
+
+console.log("14) Telebe adi ve muellim sayi:");
+students.forEach(s => {
+  const c = (s.teacher || []).length;
+  console.log(`${s.name}: muellim sayi = ${c}`);
+});
+
+console.log("15) Yeni array (name, username, password):");
+const loginArray = students.map(s => ({
+  name: s.name,
+  username: s.loginDetail.username,
+  password: s.loginDetail.password
+}));
+console.log(loginArray);
+
+console.log("16) Muellim adlarinin sonuna 'muellim' elave olundu:");
+students.forEach(s => {
+  s.teacher = (s.teacher || []).map(t => ({
+    ...t,
+    name: t.name + " muellim"
+  }));
+});
+console.log(students.map(s => s.teacher));
+
+console.log("17) Sifrelerin evveline 3 bosluq:");
+students.forEach(s => {
+  s.loginDetail.password = "   " + s.loginDetail.password;
+});
+console.log(students.map(s => s.loginDetail.password));
+
+console.log("18) Sifrenin ilk 4 simvolu qalir, qalanlar *:");
+students.forEach(s => {
+  const p = s.loginDetail.password;
+  const vis = p.slice(0, 4);
+  const masked = vis + "*".repeat(Math.max(0, p.length - 4));
+  s.loginDetail.password = masked;
+});
+console.log(students.map(s => s.loginDetail.password));
+
+console.log("19) Soyad uzunlugu ad uzunlugu qeder:");
+students.forEach(s => {
+  if (s.surname) {
+    s.surname = s.surname.slice(0, s.name.length);
+  }
+});
+console.log(students.map(s => `${s.name} ${s.surname}`));
+
+console.log("20) Yaslarin cemi:");
+const totalAge = students.reduce((sum, s) => sum + (s.age || 0), 0);
+console.log(totalAge);
+
+console.log("21) AvgPoint-larin cemi:");
+const totalAvgPoint = students.reduce((sum, s) => sum + s.avgPoint, 0);
+console.log(totalAvgPoint);
+
+console.log('22) "book" hobbisi olan telebeler:');
+students
+  .filter(s => s.hobbies.includes("book"))
+  .forEach(s => console.log(s.name));
+
+console.log("23) Yas ortalamasi:");
+const avgAge = totalAge / students.length;
+console.log(avgAge);
+
+console.log("24) Yeni obyektler (name, age, gender):");
+const genderAgeArray = students.map(s => ({
+  name: s.name,
+  age: s.age,
+  gender: s.gender
+}));
+console.log(genderAgeArray);
+
+console.log("25) Ad + soyad uzunluqlarinin cemi:");
+const totalNameSurnameLength = students.reduce((sum, s) => {
+  const nameLen = s.name?.length || 0;
+  const surLen = s.surname?.length || 0;
+  return sum + nameLen + surLen;
+}, 0);
+console.log(totalNameSurnameLength);
+
+console.log("26) Adlar tersine:");
+const reversedNames = students.map(s =>
+  s.name.split("").reverse().join("")
+);
+console.log(reversedNames);
+
+console.log('27) "gaming" hobbisi olan telebeler:');
+const gamingStudents = students.filter(s =>
+  s.hobbies.includes("gaming")
+);
+console.log(gamingStudents.map(s => s.name));
+
+console.log("28) Butun hobbilərin bir array-i:");
+const allHobbies = students.flatMap(s => s.hobbies);
+console.log(allHobbies);
+
+const uniqueHobbies = [...new Set(allHobbies)];
+console.log("Tekrarsiz hobiler:", uniqueHobbies);

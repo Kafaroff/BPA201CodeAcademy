@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button onclick="openPanel()" id="openButton">Open</button>
+
+    <div id="slidePanel">
+        <button onclick="closePanel()" id="closeButton">X</button>
+        <h3>Home</h3>
+        <h3>About</h3>
+        <h3>Services</h3>
+        <h3>Portfolio</h3>
+        <h3>Contact</h3>
+    </div>
+
+
+    <script>
+        const openButton = document.getElementById('openButton');
+        const closeButton = document.getElementById('closeButton');
+        const slidePanel = document.getElementById('slidePanel');
+
+        function openPanel() {
+            slidePanel.classList.add('active');
+            openButton.style.display = 'none';
+        }
+
+        function closePanel() {
+            slidePanel.classList.remove('active');
+            openButton.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

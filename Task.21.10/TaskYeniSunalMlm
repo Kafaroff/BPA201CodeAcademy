@@ -1,0 +1,249 @@
+using System;
+
+class Human
+{
+    public string name;
+    public string surname;
+    public int age = 0;
+    public string gender;
+    public string nationality;
+
+    public Human(string name, string surname, int age, string gender, string nationality)
+    {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.gender = gender;
+        this.nationality = nationality;
+    }
+
+    public string getFullName()
+    {
+        return name + " " + surname;
+    }
+
+    public int getBirthYear()
+    {
+        int currentYear = DateTime.Now.Year;
+        return currentYear - age;
+    }
+
+    public void DisplayInfo()
+    {
+        Console.WriteLine("Full name: " + getFullName());
+        Console.WriteLine("Age: " + age);
+        Console.WriteLine("Gender: " + gender);
+        Console.WriteLine("Nationality: " + nationality);
+        Console.WriteLine("Birth Year: " + getBirthYear());
+    }
+}
+
+class User : Human
+{
+    public string username;
+    public string email;
+    public bool admin;
+    public bool isLogged;
+    public string password;
+    public string bio;
+
+    public User(string name, string surname, int age, string gender, string nationality,
+                string username, string email, bool admin, string password, string bio)
+        : base(name, surname, age, gender, nationality)
+    {
+        if (password.Length < 5)
+        {
+            throw new ArgumentException("Password en azi 5 simvoldan ibaret olmalidir!");
+        }
+
+        this.username = username;
+        this.email = email;
+        this.admin = admin;
+        this.password = password;
+        this.bio = bio;
+        this.isLogged = false;
+    }
+
+    public string changePassword(string currentPassword, string newPassword)
+    {
+        if (currentPassword != this.password)
+        {
+            return "Current password is incorrect!";
+        }
+
+        if (newPassword == this.password)
+        {
+            return "New password and current password is the same!";
+        }
+
+        if (newPassword.Length < 5)
+        {
+            return "New password must be at least 5 characters long!";
+        }
+
+        this.password = newPassword;
+        return "Password successfully updated!";
+    }
+
+    public string changeEmail(User[] users, string newEmail)
+    {
+        foreach (User u in users)
+        {
+            if (u.email == newEmail)
+            {
+                return "This email is already in use!";
+            }
+        }
+
+        if (this.email == newEmail)
+        {
+            return "New email is the same as the current email!";
+        }
+
+        this.email = newEmail;
+        return "Email successfully updated!";
+    }
+
+    public void sortUsersByUsername(User[] users)
+    {
+        Array.Sort(users, (x, y) => x.username.CompareTo(y.username));
+    }
+
+    public void filterByBirthYear(User[] users, int year)
+    {
+        foreach (User u in users)
+        {
+            if (u.getBirthYear() > year)
+            {
+                Console.WriteLine(u.getFullName() + " - Birth Year: " + u.getBirthYear());
+            }
+        }
+    }
+
+    public void Login(User[] users, string username, string password)
+    {
+        int lamp = 0;
+
+        foreach (User u in users)
+        {
+            if (u.username == username)
+            {
+                if (u.password == password)
+                {
+                    if (u.isLogged == false)
+                    {
+                        u.isLogged = true;
+                        Console.WriteLine(u.getFullName() + " successfully logged in");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Another user currently logged in");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect username or password");
+                }
+                lamp = 1;
+            }
+        }
+
+        if (lamp == 0)
+        {
+            Console.WriteLine("User not found!");
+        }
+    }
+
+    public void Logout(User[] users, string username)
+    {
+        int lamp = 0;
+
+        foreach (User u in users)
+        {
+            if (u.username == username)
+            {
+                if (u.isLogged == false)
+                {
+                    Console.WriteLine(u.getFullName() + " user did not log in to log out!");
+                }
+                else
+                {
+                    Console.WriteLine("Successfully logged out");
+                    u.isLogged = false;
+                }
+
+                lamp = 1;
+            }
+        }
+
+        if (lamp == 0)
+        {
+            Console.WriteLine("User not found!");
+        }
+    }
+
+    public static User[] CreateUser(User[] users, User newUser)
+    {
+        int length = users.Length;
+        User[] newArray = new User[length + 1];
+        for (int i = 0; i < length; i++)
+        {
+            newArray[i] = users[i];
+        }
+        newArray[length] = newUser;
+        return newArray;
+    }
+
+    public static User[] DeleteUser(User[] users, string username)
+    {
+        int index = -1;
+        for (int i = 0; i < users.Length; i++)
+        {
+            if (users[i].username == username)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1)
+        {
+            Console.WriteLine("User not found!");
+            return users;
+        }
+
+        User[] newArray = new User[users.Length - 1];
+        int j = 0;
+        for (int i = 0; i < users.Length; i++)
+        {
+            if (i != index)
+            {
+                newArray[j++] = users[i];
+            }
+        }
+        Console.WriteLine("User deleted successfully!");
+        return newArray;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        User[] users = new User[3];
+
+        users[0] = new User("Kamal", "Aliyev", 25, "Male", "Azerbaijan",
+                            "kamal123", "kamal@mail.com", false, "12345", "Hi!");
+        users[1] = new User("Aysel", "Huseynova", 22, "Female", "Azerbaijan",
+                            "aysel22", "aysel@mail.com", false, "abcde", "Hello!");
+        users[2] = new User("Elvin", "Mammadov", 30, "Male", "Azerbaijan",
+                            "elvin30", "elvin@mail.com", true, "qwert", "Admin");
+
+
+        User newUser = new User("Nigar", "Suleymanova", 28, "Female", "Azerbaijan",
+                                "nigar28", "nigar@mail.com", false, "nigar123", "Hi all!");
+        users = User.CreateUser(users, newUser);
+
+        users = User.DeleteUser(users, "aysel22");
+    }
+}

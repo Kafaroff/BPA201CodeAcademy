@@ -1,0 +1,175 @@
+using System;
+
+interface IWorkable
+{
+    void Work();
+}
+
+interface IReportable
+{
+    void GenerateReport();
+    void ShowReport();
+}
+
+abstract class Employee
+{
+    public string name { get; set; }
+    public string position { get; set; }
+    public decimal baseSalary { get; set; }
+
+    public Employee(string name, string position, decimal baseSalary)
+    {
+        this.name = name;
+        this.position = position;
+        this.baseSalary = baseSalary;
+    }
+
+    public abstract decimal CalculateSalary();
+    public abstract void DisplayInfo();
+
+    public void GiveBonus(decimal amount) 
+    {
+        baseSalary += amount;
+    }
+}
+
+class Developer : Employee, IWorkable, IReportable
+{
+    int projectCount;
+
+    public Developer(string name, string position, decimal baseSalary, int projectCount)
+        : base(name, position, baseSalary) 
+    {
+        this.projectCount = projectCount;
+    }
+
+    
+    public override decimal CalculateSalary()
+    {
+        return baseSalary + (projectCount * 200); 
+    }
+
+    public override void DisplayInfo()
+    {
+        Console.WriteLine($"Developer: {name}, Projects: {projectCount}, Salary: {CalculateSalary()} AZN");
+    }
+
+    public void Work()
+    {
+        Console.WriteLine($"{name} is coding...");
+    }
+
+    public void GenerateReport()
+    {
+        Console.WriteLine($"{name} generated a code progress report.");
+    }
+
+    public void ShowReport()
+    {
+        Console.WriteLine($"{name}'s project report displayed.");
+    }
+}
+
+class Manager : Employee, IWorkable, IReportable
+{
+    int teamSize;
+
+    public Manager(string name, string position, decimal baseSalary, int teamSize)
+        : base(name, position, baseSalary) 
+    {
+        this.teamSize = teamSize;
+    }
+
+  
+    public override decimal CalculateSalary()
+    {
+        return baseSalary + (teamSize * 150); 
+    }
+
+    public override void DisplayInfo()
+    {
+        Console.WriteLine($"Manager: {name}, Team size: {teamSize}, Salary: {CalculateSalary()} AZN");
+    }
+
+    public void Work()
+    {
+        Console.WriteLine($"{name} is managing a team of {teamSize} members.");
+    }
+
+    public void GenerateReport()
+    {
+        Console.WriteLine($"{name} generated a team report.");
+    }
+
+    public void ShowReport()
+    {
+        Console.WriteLine($"{name}'s management report displayed.");
+    }
+}
+
+class Intern : Employee, IWorkable, IReportable
+{
+    public Intern(string name, string position, decimal baseSalary)
+        : base(name, position, baseSalary) 
+    {
+    }
+
+    
+    public override decimal CalculateSalary()
+    {
+        return baseSalary; 
+    }
+
+    public override void DisplayInfo()
+    {
+        Console.WriteLine($"Intern: {name}, Salary: {baseSalary} AZN");
+    }
+
+    public void Work()
+    {
+        Console.WriteLine($"{name} is assisting developers.");
+    }
+
+    public void GenerateReport()
+    {
+        Console.WriteLine($"{name} generated a training progress report.");
+    }
+
+    public void ShowReport()
+    {
+        Console.WriteLine($"{name}'s internship report displayed.");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+  
+        Developer dev = new Developer("Namiq", "C# Developer", 4000m, 3);
+        dev.DisplayInfo();
+        dev.Work();
+        dev.GenerateReport();
+        Console.WriteLine($"{dev.name}'s salary: {dev.CalculateSalary()} AZN");
+        dev.GiveBonus(400);
+        Console.WriteLine($"{dev.name}'s new salary after bonus: {dev.baseSalary + (dev.CalculateSalary() - dev.baseSalary)} AZN\n");
+
+   
+        Manager man = new Manager("Akif", "Team Manager", 5000m, 5);
+        man.DisplayInfo();
+        man.Work();
+        man.GenerateReport();
+        Console.WriteLine($"{man.name}'s salary: {man.CalculateSalary()} AZN");
+        man.GiveBonus(750);
+        Console.WriteLine($"{man.name}'s new salary after bonus: {man.baseSalary + (man.CalculateSalary() - man.baseSalary)} AZN\n");
+
+
+        Intern intern = new Intern("Ali", "Intern", 800m);
+        intern.DisplayInfo();
+        intern.Work();
+        intern.GenerateReport();
+        Console.WriteLine($"{intern.name}’s salary: {intern.CalculateSalary()} AZN");
+        intern.GiveBonus(0); 
+        Console.WriteLine($"{intern.name}’s new salary after bonus: {intern.baseSalary} AZN");
+    }
+}

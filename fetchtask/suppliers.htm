@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Suppliers</title>
+    <link rel="stylesheet" href="style2.css">
+  </head>
+  <body>
+    <h1>Suppliers List</h1>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Company</th>
+          <th>Contact</th>
+          <th>Title</th>
+          <th>City</th>
+          <th>Country</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="suppliers-body"></tbody>
+    </table>
+
+    <script>
+      var API_URL = "https://northwind.vercel.app/api/suppliers";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loadSuppliers();
+      });a
+
+      function loadSuppliers() {
+        fetch(API_URL)
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            var tbody = document.getElementById("suppliers-body");
+            tbody.innerHTML = "";
+
+            data.forEach(function (s) {
+              var tr = document.createElement("tr");
+              tr.innerHTML =
+                "<td>" + s.id + "</td>" +
+                "<td>" + s.companyName + "</td>" +
+                "<td>" + s.contactName + "</td>" +
+                "<td>" + s.contactTitle + "</td>" +
+                "<td>" + (s.address && s.address.city ? s.address.city : "") + "</td>" +
+                "<td>" + (s.address && s.address.country ? s.address.country : "") + "</td>" +
+                "<td>" + (s.address && s.address.phone ? s.address.phone : "") + "</td>" +
+                "<td>" +
+                '<a href="details.html?id=' + s.id + '">Details</a> ' +
+                '<button onclick="deleteSupplier(' + s.id + ')">Delete</button>' +
+                "</td>";
+
+              tbody.appendChild(tr);
+            });
+          })
+      }
+
+      function deleteSupplier(id) {
+        if (!confirm("Silmək istədiyinə əminsən?")) return;
+
+        fetch(API_URL + "/" + id, {
+          method: "DELETE"
+        })
+
+      }
+    </script>
+  </body>
+</html>

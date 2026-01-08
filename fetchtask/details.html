@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style4.css">
+</head>
+<body>
+    <div id="details"></div>
+
+<script>
+  const API_URL = "https://northwind.vercel.app/api/suppliers";
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!id) {
+      document.getElementById("details").innerText = "ID tapılmadı";
+      return;
+    }
+
+    fetch(`${API_URL}/${id}`)
+      .then(res => res.json())
+      .then(s => {
+        const a = s.address || {};
+        const div = document.getElementById("details");
+        div.innerHTML = `
+          <h2>Supplier Details</h2>
+          <p><b>ID:</b> ${s.id}</p>
+          <p><b>Company Name:</b> ${s.companyName}</p>
+          <p><b>Contact Name:</b> ${s.contactName}</p>
+          <p><b>Contact Title:</b> ${s.contactTitle}</p>
+          <h3>Address</h3>
+          <p><b>Street:</b> ${a.street ?? ""}</p>
+          <p><b>City:</b> ${a.city ?? ""}</p>
+          <p><b>Region:</b> ${a.region ?? ""}</p>
+          <p><b>Postal Code:</b> ${a.postalCode ?? ""}</p>
+          <p><b>Country:</b> ${a.country ?? ""}</p>
+          <p><b>Phone:</b> ${a.phone ?? ""}</p>
+        `;
+      })
+  });
+</script>
+
+</body>
+</html>
+

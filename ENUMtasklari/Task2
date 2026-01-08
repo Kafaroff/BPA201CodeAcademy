@@ -1,0 +1,51 @@
+// using System;
+
+// abstract class MessageSender{
+
+//     public abstract string SendMessage ();
+// }
+
+// class EmailSender : MessageSender{
+//     public override string SendMessage()
+//     {
+//         Console.WriteLine("Mesaj Email ile gonderildi");
+//         return "Mesaj Email ile gonderildi";
+//     }
+// }
+
+// class SmsSender : MessageSender{
+//     public override string SendMessage()
+//     {
+//         Console.WriteLine("Mesaj Sms ile gonderildi");
+//         return "SMS Email ile gonderildi";
+//     }
+// }
+
+
+// class Program{
+//     static void Main()
+//     {
+        
+//         int lamp = 0;
+
+//         while (lamp==0){
+//             Console.WriteLine("(1-Send message by email | 2-Send message by sms | 0-Quit) Etmek istediyiniz prosessi secin: ");
+//             int process = int.Parse(Console.ReadLine());
+//             switch (process)
+//             {
+//                 case 0:
+//                     Console.WriteLine("Program Sonlandirildi");
+//                     lamp=1;
+//                     break;
+//                 case 1:
+//                     Console.WriteLine("Email ilə mesaj göndərildi");
+//                     break;
+//                 case 2:
+//                     Console.WriteLine("SMS ilə mesaj göndərildi");
+//                     break;
+                    
+//             }
+//         }
+
+//     }
+// }
